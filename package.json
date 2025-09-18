@@ -8,6 +8,7 @@
     "export": "slidev export"
   },
   "dependencies": {
+    "@iconify-json/logos": "^1.2.9",
     "@lblod/embeddable-say-editor": "^6.0.1",
     "@slidev/cli": "^52.1.0",
     "@slidev/theme-default": "latest",

@@ -24,15 +24,25 @@ seoMeta:
   # ogImage: https://cover.sli.dev
 ---
 
-# ember(): adventures with Ember in an imperative world
+# ember[()]{class="text-rpred"}: adventures with Ember in an imperative world
 
 ---
-
+layout: center
+---
 # About me
 
+- <logos-github-icon /> github: [abeforgit](https://github.com/abeforgit)
+- <logos-mastodon-icon /> mastodon: [abeforfdv@framapiaf.org](https://framapiaf.org/@abeforfdv)
+- <logos-discord-icon /> discord: abefordisc
 ---
 
 # Redpencil
+https://redpencil.io/
+
+- Specialized in interoperability and data modelling
+- Committed to open-source
+- All ember, all the time
+
 
 ---
 
@@ -41,7 +51,7 @@ seoMeta:
 Ember is many things:
 
 <ul>
-<li v-mark="{ color: '#FF7700', type: 'circle' }"> a DOM rendering framework (glimmer components, template tag syntax) </li>
+<li v-mark="{ color: '#dc2626', type: 'box' }"> a DOM rendering framework (glimmer components, template tag syntax) </li>
 </ul>
 
 - a reactivity system (`@tracked`)
@@ -51,7 +61,6 @@ Ember is many things:
 - a dependency injection framework (`owner`, `@service`, etc)
 
 ---
-
 
 # The project: say-editor
 
@@ -66,19 +75,36 @@ building blocks:
 
 ---
 
-# Prosemirror
-
-
-
-
----
-
 # The project: say-editor
 
-short demo
 <Transform :scale="0.5">
 <Counter />
 </Transform>
+
+<div
+  v-click
+  v-motion
+  class="position-absolute top-0 right-0"
+  :initial="{ x: 80 }"
+  :enter="{ x: 0 }"
+  :leave="{ x: -80 }">
+<img class="w-24"  src="./images/onion.png" />
+</div>
+
+---
+layout: center
+---
+
+
+# ember[()]{class="text-rpred"}
+
+
+<v-click at="1">
+
+# ember[Component()]{class="text-rpred"}
+# ember[App()]{class="text-rpred"}
+
+</v-click>
 
 ---
 
@@ -94,15 +120,16 @@ See Nick's talk - potentially add some things
 
 ## General-purpose
 
-- react 
-- vue   
+- react
+- vue
 - svelte
-- ember 
+- ember
 
 ## Specialized
-- leaflet    
-- d3         
-- codemirror 
+
+- leaflet
+- d3
+- codemirror
 - prosemirror
 
 ---
@@ -126,7 +153,6 @@ const el = document.createElement('p');
 layer.bindPopup(el);
 ```
 
-
 ---
 
 # Frameworks can render your code
@@ -149,11 +175,14 @@ class SectionView {
 ```
 
 ---
+layout: center
+---
 
 # But who wants to write plain html?
 
----
+<img width="400px" src="./images/onion_scared_text.png" />
 
+---
 
 # Using ember to generate DOM elements
 
@@ -174,29 +203,19 @@ destinationElement = document.createElement('div');
 
 # Situations where in-element is not enough
 
-TODO
-
+<ul>
+<v-click>
+<li> nesting<img class="w-24"  src="./images/onion.png" /> </li>
+</v-click>
+<v-click>
+<li>other</li> 
+</v-click>
+</ul>
 ---
 
 # Before ember 6.8
 
-```ts {*}{maxHeight:'400px'}
-this.template = hbs`<this.component
-                      @getPos={{this.getPos}}
-                      @node={{this.node}}
-                      @updateAttribute={{this.updateAttribute}}
-                      @controller={{this.controller}}
-                      @view={{this.view}}
-                      @selected={{this.selected}}
-                      @contentDecorations={{this.contentDecorations}}
-                      @selectNode={{this.selectNode}}
-                    >
-                      {{#unless this.atom}}
-                        {{! @glint-expect-error: not typesafe yet }}
-                        <EmberNode::Slot @contentDOM={{this.contentDOM}}/>
-                      {{/unless}}
-                    </this.component>`;
-
+```ts {1,12-19,21-23,24,26,27}{maxHeight:'400px'}
 function emberComponent(
   owner: Owner,
   name: string,
@@ -220,7 +239,7 @@ function emberComponent(
   const component = owner.lookup(
     `component:${componentName}`
   ) as EmberInlineComponent;
-  const node = document.createElement(inline ? 'span' : 'div');
+  const node = document.createElement('div');
   node.classList.add('ember-node');
   component.appendTo(node);
   return { node, component };
@@ -231,7 +250,7 @@ function emberComponent(
 
 # After ember 6.8
 
-```gts {*}{maxHeight:'400px'}
+```ts {1,11,13-19,21}{maxHeight:'400px'}
 function emberComponent(
   owner: Owner,
   inline: boolean,
@@ -242,7 +261,7 @@ function emberComponent(
     contentDOM?: HTMLElement;
   },
 ): { node: HTMLElement; renderResult: ReturnType<typeof renderComponent> } {
-  const node = document.createElement(inline ? 'span' : 'div');
+  const node = document.createElement('div');
   node.classList.add('ember-node');
   const renderResult = renderComponent(EmberNodeContainer, {
     into: node,
@@ -254,27 +273,17 @@ function emberComponent(
 
   return { node, renderResult };
 }
-const EmberNodeContainer: TOC<ContainerSig> = <template>
-  <@emberNodeComponent
-    @getPos={{@getPos}}
-    @node={{@node}}
-    @updateAttribute={{@updateAttribute}}
-    @controller={{@controller}}
-    @view={{@view}}
-    @selected={{@selected}}
-    @contentDecorations={{@contentDecorations}}
-    @selectNode={{@selectNode}}
-  >
-    {{#if @atom}}
-      {{#if @contentDom}}
-        <EmberNodeSlot @contentDOM={{@contentDom}} />
-      {{/if}}
-
-    {{/if}}
-  </@emberNodeComponent>
-</template> satisfies TOC<ContainerSig>;
 ```
 
+---
+
+# renderComponent RFC
+https://rfcs.emberjs.com/id/1099-renderComponent
+
+<img width="300px" height="300px" src="./images/rendercomponent-qr.svg" />
+
+---
+layout: quote
 ---
 
 # Packaging ember as a library
@@ -314,6 +323,8 @@ Bundlers don't understand these js files
 
 Ugly solutions for ugly problems
 
+Tell the bundler to treat the built files as plain strings...
+
 ```js
 // webpack.config.js
 
@@ -335,7 +346,9 @@ Ugly solutions for ugly problems
 
 Ugly solutions for ugly problems
 
-```js {*}{ maxHeight: '400px' }
+...and inject the strings into an iframe
+
+```js {2,15,25-35}{ maxHeight: '400px' }
 function renderApp() {
  const editorFrame = document.createElement('iframe');
   editorFrame.setAttribute('srcdoc', srcDoc);
@@ -389,12 +402,148 @@ modules, allowing us to use all the features of the build-system
 
 ---
 
+# From app to library: commit-by-commit
+
+https://github.com/abeforgit/portable-ember-demo
+
+<img heigth="300px" width="300px" src="./images/qr-code-to-portable-ember-demo.svg" />
+
+---
+
+# Convince ember it doesn't own the whole page
+
+Fixing the environment config
+
+````md magic-move
+```ts
+import config from 'ember-vite-app/config/environment';
+
+if (macroCondition(isDevelopingApp())) {
+  importSync('./deprecation-workflow');
+}
+
+export default class App extends Application {
+  modulePrefix = config.modulePrefix;
+  podModulePrefix = config.podModulePrefix;
+  Resolver = Resolver.withModules(compatModules);
+}
+
+loadInitializers(App, config.modulePrefix, compatModules);
+```
+
+```ts
+import config from 'ember-vite-app/config/environment';
+
+if (macroCondition(isDevelopingApp())) {
+  importSync('./deprecation-workflow');
+}
+const modulePrefix = 'my-app-name';
+export default class App extends Application {
+  modulePrefix = modulePrefix;
+  podModulePrefix = modulePrefix;
+  Resolver = Resolver.withModules(compatModules);
+}
+
+loadInitializers(App, modulePrefix, compatModules);
+```
+````
+
+---
+
+# Convince ember it doesn't own the whole page
+
+Disconnect the router from the page location
+
+````md magic-move
+```ts
+export default class App extends Application {
+  modulePrefix = modulePrefix;
+  podModulePrefix = modulePrefix;
+  Resolver = Resolver.withModules(compatModules);
+}
+```
+
+```ts
+export default class App extends Application {
+  modulePrefix = modulePrefix;
+  podModulePrefix = modulePrefix;
+  locationType = 'none';
+  Resolver = Resolver.withModules(compatModules);
+}
+```
+````
+
+````md magic-move
+```ts
+export default class Router extends EmberRouter {
+  location = config.locationType;
+  rootURL = config.rootURL;
+}
+```
+
+```ts
+export default class Router extends EmberRouter {
+  location = 'none';
+  rootURL = config.rootURL;
+}
+```
+````
+
+Theoretically this is enough... because the app is already an esmodule!
+
+---
+
+# Manually booting the ember app
+
+
+````md magic-move
+```ts
+export default class App extends Application {
+  modulePrefix = modulePrefix;
+  podModulePrefix = modulePrefix;
+  locationType = 'none';
+  Resolver = Resolver.withModules(compatModules);
+}
+```
+
+```ts
+export default class App extends Application {
+  modulePrefix = modulePrefix;
+  podModulePrefix = modulePrefix;
+  locationType = 'none';
+  autoboot = false;
+  Resolver = Resolver.withModules(compatModules);
+}
+```
+````
+
+<v-click>
+
+```ts
+import App from './app.ts';
+export async function emberApp(element: HTMLElement) {
+  const app = App.create({
+    autoboot: false,
+    name: `ember-vite-app`,
+    location: 'none',
+  });
+
+  await app.visit('/', {
+    rootElement: element,
+    location: 'none',
+  });
+}
+```
+
+</v-click>
+
+---
+
 # Vite configuration
 
 vite is just rollup + esbuild, but also a lot more
 
-By default, vite is set up to build a browser bundle, just like broccoli...
-
+````md magic-move
 ```js
 import { defineConfig } from 'vite';
 import { extensions, classicEmberSupport, ember } from '@embroider/vite';
@@ -412,11 +561,43 @@ export default defineConfig({
   ],
 });
 ```
+
+```js
+import { defineConfig } from 'vite';
+import { extensions, classicEmberSupport, ember } from '@embroider/vite';
+import { babel } from '@rollup/plugin-babel';
+
+export default defineConfig({
+  build: {
+    lib: {
+      entry: resolve(__dirname, 'app/app.ts'),
+      name: 'ember-vite-app',
+      fileName: 'ember-vite-app',
+    },
+    rollupOptions: {
+      input: 'app/main.ts',
+    },
+  },
+  plugins: [
+    classicEmberSupport(),
+    ember(),
+    // extra plugins here
+    babel({
+      babelHelpers: 'runtime',
+      extensions,
+    }),
+  ],
+});
+```
+````
+
 ---
 
 # Vite configuration
+
 build output
 
+````md magic-move
 ```shellsession
 $ tree dist
 dist
@@ -436,54 +617,29 @@ dist
 
 6 directories, 8 files
 ```
----
 
-# Vite configuration
-
-...but unlike broccoli, it can easily be configured to do something else
-
-```js {*}{ maxHeight: '400px' }
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { defineConfig } from 'vite';
-import { extensions, classicEmberSupport, ember } from '@embroider/vite';
-import { babel } from '@rollup/plugin-babel';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-export default defineConfig({
-  build: {
-    lib: {
-      entry: resolve(__dirname, 'app/app.ts'),
-      name: 'my-app',
-      fileName: 'my-app',
-    },
-    rollupOptions: {
-      input: 'app/app.ts',
-    },
-  },
-  plugins: [
-    // hmm... what's this?
-    tweakedClassicEmber,
-    ember(),
-    babel({
-      babelHelpers: 'runtime',
-      extensions,
-    }),
-  ],
-});
+```shellsession
+❯ tree dist
+dist
+├── ember-vite-app.css
+├── ember-vite-app.mjs
+├── ember-vite-app.umd.js
+├── ember-welcome-page
+│   └── images
+│       └── construction.png
+├── @embroider
+│   └── virtual
+│       ├── app.css
+│       ├── vendor.css
+│       └── vendor.js
+└── robots.txt
 ```
+````
 
----
-
-# Vite configuration
-
-build output
-
-![](./images/vite-dist.png)
-
+<v-click>
 By default, vite outputs both an es module and an umd bundle, which is perfect
 for compatibility with just about anything.
+</v-click>
 
 ---
 
@@ -491,27 +647,51 @@ for compatibility with just about anything.
 
 Pointing node to the right files
 
-```js
-  "main": "./dist/my-app.umd.js",
-  "module": "./dist/my-app.mjs",
+````md magic-move
+```json
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*",
+  },
 ```
 
----
+```json
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*",
+    ".": {
+      "import": "./dist/ember-vite-app.mjs",
+      "require": "./dist/ember-vite-app.umd.js"
+    }
+  },
+  "main": "./dist/assets/ember-vite-app.umd.js",
+  "module": "./dist/assets/ember-vite-app.mjs",
+  "files": [
+    "dist"
+  ],
+```
+````
 
-# Manually booting the ember app
-
----
-
-# Setting up the test-app for development
 
 ---
 
 # Things to look out for
 
-We break an assumption
+- global style rules (e.g. media-queries, use container queries instead!)
+- shadow-dom or not?
+- addon assumptions
 
 ---
 
 # Combining with renderComponent
+https://github.com/NullVoxPopuli/smol-est-ember-app/tree/main
+
+<img width="300px" height="300px" src="./images/smolest-ember-app-qr.svg" />
+
+
+---
+
+# Special thanks
+
 
 ---
