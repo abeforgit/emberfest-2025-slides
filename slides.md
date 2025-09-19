@@ -110,7 +110,33 @@ layout: center
 
 # Integrating frameworks in Ember
 
-See Nick's talk - potentially add some things
+
+<div class="h-92 text-center flex">
+
+<div class="ma">
+
+
+
+see https://github.com/mainmatter/multiframework-mashup
+
+...but let's do the exact opposite!
+
+
+<div
+  v-click
+  v-motion
+  class="position-absolute top-30 right-0 left-0 bottom-0"
+  :initial="{ rotate: -0 }"
+  :enter="{ rotate: 180 }"
+  :leave="{ y: 0 }">
+
+<img src="./images/onion.png" class="w-54" />
+
+</div>
+
+</div>
+</div>
+
 
 ---
 
@@ -208,7 +234,7 @@ destinationElement = document.createElement('div');
 <li> nesting<img class="w-24"  src="./images/onion.png" /> </li>
 </v-click>
 <v-click>
-<li>other</li> 
+<li>storybook</li> 
 </v-click>
 </ul>
 ---
@@ -283,15 +309,32 @@ https://rfcs.emberjs.com/id/1099-renderComponent
 <img width="300px" height="300px" src="./images/rendercomponent-qr.svg" />
 
 ---
-layout: quote
----
 
 # Packaging ember as a library
 
 Making ember apps is fun, but....
 
+
 "Hey that's a cool thing you've build, how can I use it in my angular/react/vue app?"
 
+<div
+  v-click
+  v-motion
+  class="position-absolute top-30 right-0 left-0 bottom-0"
+  :initial="{ y: -1000 }"
+  :enter="{ y: 0 }"
+  :leave="{ y: 0 }">
+
+<div class="h-92 text-center flex">
+
+<div class="ma">
+
+<img width="300" src="./images/boxy.png" />
+
+</div>
+</div>
+
+</div>
 ---
 
 # Pre-vite
@@ -520,6 +563,7 @@ export default class App extends Application {
 <v-click>
 
 ```ts
+// separating to an arbitrary file, e.g. main.ts for clarity
 import App from './app.ts';
 export async function emberApp(element: HTMLElement) {
   const app = App.create({
@@ -570,7 +614,7 @@ import { babel } from '@rollup/plugin-babel';
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, 'app/app.ts'),
+      entry: resolve(__dirname, 'app/main.ts'),
       name: 'ember-vite-app',
       fileName: 'ember-vite-app',
     },
@@ -693,5 +737,23 @@ https://github.com/NullVoxPopuli/smol-est-ember-app/tree/main
 
 # Special thanks
 
+<v-click>
+
+- Marijn Haverbeke: https://marijnhaverbeke.nl/
+
+</v-click>
+
+<v-click>
+
+- The GN team
+
+</v-click>
+
+
+<v-click>
+
+- My girlfriend
+
+</v-click>
 
 ---
